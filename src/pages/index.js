@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Inter } from "@next/font/google";
 // import styles from '@/styles/Home.module.css';
 import Search from "@/components/Search";
+import FoodList from "@/components/FoodList";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,50 +17,27 @@ export default function Home({ results }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="m-10">
-        <h1 className="text-blue-500 text-center mb-10">
+        <h1 className="text-red-500 text-center mb-10">
           This is brand new app using the FDC API
         </h1>
+
         <Search />
 
         <h2 className="mb-10">
           Here is the list with the searched foods and their nutrients:
         </h2>
 
-        <section>
-          {results &&
-            results.foods.map((food, key) => (
-              <article key={food.fdcId} className="mb-5">
-                <div className="flex gap-2 justify-between">
-                  <p>{food.description} </p>
-                  <p>{food.brandName ? food.brandName : "N/A"}</p>
-                </div>
-                <ul>
-                  {food.foodNutrients
-                    .filter(
-                      (nutrient) =>
-                        nutrient.nutrientId == 1003 ||
-                        nutrient.nutrientId == 1004 ||
-                        nutrient.nutrientId == 1005
-                    )
-                    .map((nutrient) => (
-                      <li key={nutrient.foodNutrientId} className="flex gap-2">
-                        <span>{nutrient.nutrientName}</span>
-                        <span>{nutrient.value}g</span>
-                      </li>
-                    ))}
-                </ul>
-              </article>
-            ))}
-        </section>
+        <FoodList results={results} />
+
       </main>
     </>
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
   console.log("hello from the server");
 
-  const baseUrl = `https://api.nal.usda.gov/fdc/v1/foods/search?query=pork&api_key=${process.env.API_KEY}`;
+  const baseUrl = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${query.term}&api_key=${process.env.API_KEY}`;
 
   const res = await fetch(baseUrl);
   const data = await res.json();
