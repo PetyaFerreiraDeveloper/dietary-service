@@ -37,7 +37,7 @@ export default function Home({ results }) {
 export async function getServerSideProps({ query }) {
   console.log("hello from the server");
 
-  const baseUrl = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${query.term}&api_key=${process.env.API_KEY}`;
+  const baseUrl = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${query.search}&api_key=${process.env.API_KEY}`;
 
   const res = await fetch(baseUrl);
   const data = await res.json();
