@@ -1,11 +1,13 @@
 // import {render, screen} from '@testing-library/jest-dom/extend-expect';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import Search from './Search';
+import Search from "./Search";
 
-it('allows me to type in', () => {
-    render(<Search />)
+it("allows me to type in", () => {
+  render(<Search />);
 
-    userEvent.type(screen.getByLabelText(/Search for food:/i), 'cheese')
-})
+  userEvent.type(screen.getByLabelText(/Search for food:/i), "cheese");
+
+  userEvent.click(screen.getByRole("button", { name: /submit/i }));
+});
